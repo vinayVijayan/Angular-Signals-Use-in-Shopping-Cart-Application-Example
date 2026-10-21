@@ -1,18 +1,21 @@
-import { Injectable, signal } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-
+import { computed, Injectable, signal } from "@angular/core";
+export interface Product {
+  name: string;
+  price: number;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-    cartcount = signal<number>(0)
+cartitems = signal<Product[]>([])
 
-    addToCart(){
-        
-        this.cartcount.update(current =>{
-            const cartcount = current + 1;
+totalCount = computed(()=> this.cartitems().length)
+totalPrice = computed(() => this.cartitems().reduce((sum,item)=>sum + item.price,0))
 
-            return cartcount
-        })
-    }
+addToCart(product:Product){
+    this.cartitems.update(items=>[...items,product])
+}
+clearCart(){
+    this.cartitems.set([]);
+}
 }

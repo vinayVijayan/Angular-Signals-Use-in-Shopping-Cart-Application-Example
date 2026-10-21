@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { CartService } from '../services/cart.services';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   imports: [],
@@ -9,12 +8,13 @@ import { CartService } from '../services/cart.services';
 })
 export class Ngconentex {
 
-  @Input() productname:string = ''
-  @Input() price:number = 0
-  constructor(private cartService: CartService){
-
-  }
-  buyItem(){
-  this.cartService.addToCart();  
+productName =  input<string>("");
+price = input<number>(0)
+added = output<{ name: string; price: number }>();
+buyItem(){
+  this.added.emit({
+    name:this.productName(),
+    price:this.price()
+  })
 }
 }
